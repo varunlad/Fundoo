@@ -7,8 +7,6 @@ namespace FundooModel
 {
    public class RegisterModel
     {
-        public class RegistrationModel
-        {
             [Required]
             public string FirstName { get; set; }
             [Required]
@@ -17,6 +15,5 @@ namespace FundooModel
             public string Email { get; set; }
             [Required]
             public string Password { get; set; }
-        }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FundooModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static FundooModel.RegisterModel;
+
 
 namespace FundooRepository.Context
 {
@@ -12,6 +13,6 @@ namespace FundooRepository.Context
             {
 
             }
-            public DbSet<RegistrationModel> Users { get; set; } //DataSet- it is used to represent table
+            public DbSet<RegisterModel> Users { get; set; } //DataSet- it is used to represent table
         }
 }
