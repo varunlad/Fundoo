@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FundooModel
 {
-    class RegisterModel
+   public class RegisterModel
     {
         public class RegistrationModel
         {
