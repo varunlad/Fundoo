@@ -1,5 +1,6 @@
 ﻿using FundooModel;
 using FundooRepository.Context;
+using FundooRepository.Interface;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

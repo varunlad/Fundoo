@@ -1,4 +1,4 @@
-﻿using FundooManager.Manager;
+﻿using FundooManager.Interface;
 using FundooModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace FundooNotesDemo.Controller
 {
-    public class UserController
+    public class UsersController : ControllerBase
     {
         private readonly IUserManager manager;
 
-        public UserController(IUserManager manager)
+        public UsersController(IUserManager manager)
         {
             this.manager = manager;
         }
         [HttpPost]
-        [Route("api/register")]
+        [Route("api/register")]//API-Application programming interface
         public IActionResult Register([FromBody] RegisterModel userData)
         {
             try

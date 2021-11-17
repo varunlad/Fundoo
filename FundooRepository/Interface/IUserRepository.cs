@@ -1,7 +1,7 @@
 ﻿using FundooModel;
 using Microsoft.Extensions.Configuration;
 
-namespace FundooRepository.Repository
+namespace FundooRepository.Interface
 {
     public interface IUserRepository
     {

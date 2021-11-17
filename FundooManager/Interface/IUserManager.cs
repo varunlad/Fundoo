@@ -1,6 +1,6 @@
 ﻿using FundooModel;
 
-namespace FundooManager.Manager
+namespace FundooManager.Interface
 {
     public interface IUserManager
     {
