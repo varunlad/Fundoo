@@ -1,6 +1,12 @@
+using FundooManager.Interface;
+using FundooManager.Manager;
+using FundooRepository.Context;
+using FundooRepository.Interface;
+using FundooRepository.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +21,7 @@ namespace FundooNotesDemo
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -23,7 +29,11 @@ namespace FundooNotesDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddMvc();
+            services.AddDbContext<UserContext>(options => options.UseMySql(this.Configuration.GetConnectionString("fundoodemo")));
+            //services.AddDbContext<UserContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserManager, UserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +59,9 @@ namespace FundooNotesDemo
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

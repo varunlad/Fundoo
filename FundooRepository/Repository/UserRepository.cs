@@ -50,8 +50,8 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var validEmail = this.userContext.Login.Where(x => x.Email == logIn.Email).FirstOrDefault();
-                var validPassword = this.userContext.Login.Where(x => x.Password == logIn.Password).FirstOrDefault();
+                var validEmail = this.userContext.Users.Where(x => x.Email == logIn.Email).FirstOrDefault();
+                var validPassword = this.userContext.Users.Where(x => x.Password == logIn.Password).FirstOrDefault();
                 if (validEmail == null && validPassword == null)
                 {
                     return "Login UnSuccessful";
