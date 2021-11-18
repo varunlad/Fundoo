@@ -30,7 +30,7 @@ namespace FundooRepository.Repository
                     if (userData != null)
                     {
                         // Encrypting the password
-                        //userData.Password = this.EncryptPassword(userData.Password);
+                        userData.Password = this.EncryptPassword(userData.Password);
                         // Add the data to the database
                         this.userContext.Add(userData);
                         // Save the change in database
@@ -66,6 +66,11 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
 
+        }
+        public string EncryptPassword(string password)
+        {
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
+            return Convert.ToBase64String(passwordBytes);
         }
     }
 }
