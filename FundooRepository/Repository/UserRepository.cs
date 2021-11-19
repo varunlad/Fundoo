@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -96,6 +97,30 @@ namespace FundooRepository.Repository
             // ComputeHash - returns byte array  
             byte[] bytesRepresentation = sha384Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
             return BitConverter.ToString(bytesRepresentation);
+        }
+        //SMTP (Simple Mail Transfer Protocol) is a part of the application layer of the TCP/IP protocol.
+        //It is an Internet standard for electronic mail (email) transmission. The default TCP port used by SMTP is 25 and the SMTP
+        //connections secured by SSL(Security socket layer), known as SMTPS, uses the default to port 465.
+        public string ForgotPassword(string email)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                mail.From = new MailAddress("varunlad59@gmail.com");
+                mail.To.Add(email);
+                mail.Subject = "Test Mail";
+                mail.Body = "This is for testing SMTP mail from GMAIL";
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("varunlad59@gmail.com", "varunlad59@123");
+                SmtpServer.EnableSsl = true;
+                SmtpServer.Send(mail);
+                return "Email send";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
