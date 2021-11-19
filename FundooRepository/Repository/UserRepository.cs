@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace FundooRepository.Repository
@@ -69,8 +70,10 @@ namespace FundooRepository.Repository
         }
         public string EncryptPassword(string password)
         {
-            var passwordBytes = Encoding.UTF8.GetBytes(password);
-            return Convert.ToBase64String(passwordBytes);
+            SHA384 sha384Hash = SHA384.Create();//creating object (it is a abstract class thats why we use create() method)
+            // ComputeHash - returns byte array  
+            byte[] bytesRepresentation = sha384Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return BitConverter.ToString(bytesRepresentation);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpGet]
         [Route("api/Login")]
         public IActionResult LogIn([FromBody] LoginModel login)
         {
