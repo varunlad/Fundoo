@@ -68,6 +68,28 @@ namespace FundooRepository.Repository
             }
 
         }
+        public string ResetPassword(ResetPasswordModel reset)
+        {
+            try
+            {
+                var validEmail = this.userContext.Users.Where(x => x.Email == reset.Email).FirstOrDefault();
+                if (reset != null)
+                {
+                    // Encrypting the password
+                    validEmail.Password = EncryptPassword(reset.NewPassword);
+                    // Add the data to the database
+                    this.userContext.Update(validEmail);
+                    // Save the change in database
+                    this.userContext.SaveChanges();
+                    return "Reset Password Successful";
+                }
+                return "Reset Password Unsucessful";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public string EncryptPassword(string password)
         {
             SHA384 sha384Hash = SHA384.Create();//creating object (it is a abstract class thats why we use create() method)
