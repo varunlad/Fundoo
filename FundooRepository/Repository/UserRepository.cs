@@ -27,12 +27,14 @@ namespace FundooRepository.Repository
             try
             {
                 var validEmail = this.userContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                //FirstOrDefault-FirstOrDefault works same as First() does, FirstOrDefault returns the first element from a sequence, but here there is an advantage over First(), so if there is no record in the collection which matches input criteria then FirstOrDefault() can handle null values and it does not throw an exception.
+                //Here we prevalid if email exits or not we dont want to create simillar emails
                 if (validEmail == null)
                 {
                     if (userData != null)
                     {
                         // Encrypting the password
-                        userData.Password = this.EncryptPassword(userData.Password);
+                        userData.Password = EncryptPassword(userData.Password);
                         // Add the data to the database
                         this.userContext.Add(userData);
                         // Save the change in database
