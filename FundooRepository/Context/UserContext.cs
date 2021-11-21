@@ -14,6 +14,10 @@ namespace FundooRepository.Context
 
             }
             public DbSet<RegisterModel> Users { get; set; } //DataSet- it is used to represent table
+<<<<<<< HEAD
             public DbSet<NotesModel> Notes { get; set; }
+=======
+        public DbSet<NotesModel> Notes { get; set; }
+>>>>>>> User
     }
 }

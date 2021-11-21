@@ -55,10 +55,19 @@ namespace FundooRepository.Repository
             try
             {
                 var validEmail = this.userContext.Users.Where(x => x.Email == logIn.Email).FirstOrDefault();
+                logIn.Password = EncryptPassword(logIn.Password);
                 var validPassword = this.userContext.Users.Where(x => x.Password == logIn.Password).FirstOrDefault();
                 if (validEmail == null && validPassword == null)
                 {
-                    return "Login UnSuccessful";
+                    return "Login UnSuccessful please enter correct Email and Password";
+                }
+                else if (validEmail == null && validPassword != null)
+                {
+                    return "Login UnSuccessful Please Enter correct Email ";
+                }
+                else if (validEmail != null && validPassword == null)
+                {
+                    return "Login UnSuccessful Please Enter correct Password ";
                 }
                 else
                 {
