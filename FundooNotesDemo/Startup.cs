@@ -34,6 +34,8 @@ namespace FundooNotesDemo
             //services.AddDbContext<UserContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<INotesRepository, NotesRepository>();
+            services.AddTransient<INotesManager, NotesManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
