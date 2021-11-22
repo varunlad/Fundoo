@@ -7,5 +7,6 @@ namespace FundooManager.Interface
     {
         Task<string> Notes(NotesModel notes);
         Task<string> Update(NotesModel Title);
+        Task<string> NoteArchive(NotesModel notes);
     }
 }

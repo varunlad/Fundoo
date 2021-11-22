@@ -67,5 +67,47 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> NoteArchive(NotesModel noteId)
+        {
+            try
+            {
+                var archivedNote = this.userContext.NotesTable.Where(x => x.NoteID == noteId.NoteID).FirstOrDefault();
+                if (archivedNote != null)
+                {
+                    if (archivedNote.Archieve == false)
+                    {
+                        archivedNote.Archieve = true;
+                        if (archivedNote.Pin == true)
+                        {
+                            archivedNote.Pin = false;
+                            this.userContext.NotesTable.Update(archivedNote);
+                            await this.userContext.SaveChangesAsync();
+                            return "Notes unpinned and moved to Archived";
+                        }
+                        else
+                        {
+                            this.userContext.NotesTable.Update(archivedNote);
+                            await this.userContext.SaveChangesAsync();
+                            return "Note archived";
+                        }
+                    }
+                    else
+                    {
+                        archivedNote.Archieve = false;
+                        this.userContext.NotesTable.Update(archivedNote);
+                        await this.userContext.SaveChangesAsync();
+                        return "Note unarchived";
+                    }
+                }
+                else
+                {
+                    return "This note does not exist";
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

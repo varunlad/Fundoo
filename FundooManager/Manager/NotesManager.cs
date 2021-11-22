@@ -37,5 +37,16 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public async Task<string> NoteArchive(NotesModel notes)
+        {
+            try
+            {
+                return await this.repository.NoteArchive(notes);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
