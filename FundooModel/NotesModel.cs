@@ -11,9 +11,10 @@ namespace FundooModel
     {
         [Key]
         public int NoteID { get; set; }
-        // Foreign key to UserIDs
-        [ForeignKey("UserID")]
+        // Foreign key to UserID
         public int UserID { get; set; }
+        [ForeignKey("UserID")]
+        public RegisterModel registraterModel { get; set; }
         public string Title { get; set; }
         public string AddNotes { get; set; }
         public string Color { get; set; }

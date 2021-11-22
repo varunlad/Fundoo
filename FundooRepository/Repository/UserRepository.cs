@@ -26,7 +26,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var validEmail = this.userContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                var validEmail = this.userContext.UsersTable.Where(x => x.Email == userData.Email).FirstOrDefault();
                 //FirstOrDefault-FirstOrDefault works same as First() does, FirstOrDefault returns the first element from a sequence, but here there is an advantage over First(), so if there is no record in the collection which matches input criteria then FirstOrDefault() can handle null values and it does not throw an exception.
                 //Here we prevalid if email exits or not we dont want to create simillar emails
                 if (validEmail == null)
@@ -54,9 +54,9 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var validEmail = this.userContext.Users.Where(x => x.Email == logIn.Email).FirstOrDefault();
+                var validEmail = this.userContext.UsersTable.Where(x => x.Email == logIn.Email).FirstOrDefault();
                 logIn.Password = EncryptPassword(logIn.Password);
-                var validPassword = this.userContext.Users.Where(x => x.Password == logIn.Password).FirstOrDefault();
+                var validPassword = this.userContext.UsersTable.Where(x => x.Password == logIn.Password).FirstOrDefault();
                 if (validEmail == null && validPassword == null)
                 {
                     return "Login UnSuccessful please type correct Email and Password";
@@ -84,7 +84,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var validEmail = this.userContext.Users.Where(x => x.Email == reset.Email).FirstOrDefault();
+                var validEmail = this.userContext.UsersTable.Where(x => x.Email == reset.Email).FirstOrDefault();
                 if (reset != null)
                 {
                     // Encrypting the password
