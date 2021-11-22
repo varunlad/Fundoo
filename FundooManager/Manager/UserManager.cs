@@ -5,6 +5,7 @@ using FundooRepository.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooManager.Manager
 {
@@ -16,11 +17,11 @@ namespace FundooManager.Manager
             this.repository = repository;
         }
 
-        public string Register(RegisterModel userData)
+        public async Task<string> Register(RegisterModel userData)
         {
             try
             {
-                return this.repository.Register(userData);
+                return await this.repository.Register(userData);//Registration Successful or Unsuccessful
             }
             catch (Exception e)
             {
@@ -38,22 +39,22 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public string ResetPassword(ResetPasswordModel reset)
+        public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
             try
             {
-                return this.repository.ResetPassword(reset);
+                return await this.repository.ResetPassword(reset);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-        public string ForgotPassword(string email)
+        public async Task<string> ForgotPassword(string email)
         {
             try
             {
-                return this.repository.ForgotPassword(email);
+                return await this.repository.ForgotPassword(email);
             }
             catch (Exception e)
             {
