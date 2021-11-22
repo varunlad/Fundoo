@@ -26,5 +26,16 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public async Task<string> Update(NotesModel Title)
+        {
+            try
+            {
+                return await this.repository.Update(Title);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

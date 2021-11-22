@@ -9,5 +9,6 @@ namespace FundooRepository.Interface
         IConfiguration Configuration { get; }
 
         Task<string> Notes(NotesModel notes);
+        Task<string> Update(NotesModel update);
     }
 }

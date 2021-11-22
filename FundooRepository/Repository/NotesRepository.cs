@@ -44,5 +44,28 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> Update(NotesModel update)
+        {
+            try
+            {
+                var validNotesID = this.userContext.NotesTable.Where(x => x.NoteID == update.NoteID).FirstOrDefault();
+                if (update != null)
+                {
+                    validNotesID.Title = update.Title;
+                    validNotesID.AddNotes = update.AddNotes;
+                    // Add the data to the database
+                    this.userContext.Update(validNotesID);
+                    // Save the change in database
+                    await this.userContext.SaveChangesAsync();
+
+                    return "Notes has Updated";
+                }
+                return "Notes are not updated";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
