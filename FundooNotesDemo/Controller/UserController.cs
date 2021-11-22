@@ -18,11 +18,11 @@ namespace FundooNotesDemo.Controller
         }
         [HttpPost]
         [Route("api/register")]//API-Application programming interface
-        public IActionResult Register([FromBody] RegisterModel userData)
+        public async Task<IActionResult> Register([FromBody] RegisterModel userData)
         {
             try
             {
-                string result = this.manager.Register(userData);
+                string result = await this.manager.Register(userData);
 
                 if (result.Equals("Registration Successful"))
                 {
@@ -62,11 +62,11 @@ namespace FundooNotesDemo.Controller
         }
         [HttpPut]
         [Route("api/reset")]
-        public IActionResult ResetPassword([FromBody] ResetPasswordModel reset)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel reset)
         {
             try
             {
-                string result = this.manager.ResetPassword(reset);
+                string result = await this.manager.ResetPassword(reset);
 
                 if (result.Equals("Reset Password Successful"))
                 {
@@ -84,11 +84,11 @@ namespace FundooNotesDemo.Controller
         }
         [HttpPost]
         [Route("api/forgot")]
-        public IActionResult ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(string email)
         {
             try
             {
-                string result = this.manager.ForgotPassword(email);
+                string result = await this.manager.ForgotPassword(email);
 
                 if (result.Equals("Email send"))
                 {
