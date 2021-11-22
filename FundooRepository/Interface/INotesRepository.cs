@@ -1,5 +1,6 @@
 ﻿using FundooModel;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace FundooRepository.Interface
 {
@@ -7,6 +8,6 @@ namespace FundooRepository.Interface
     {
         IConfiguration Configuration { get; }
 
-        string Notes(NotesModel notes);
+        Task<string> Notes(NotesModel notes);
     }
 }

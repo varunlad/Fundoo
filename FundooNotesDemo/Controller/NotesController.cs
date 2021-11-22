@@ -17,11 +17,11 @@ namespace FundooNotesDemo.Controller
         }
         [HttpPost]
         [Route("api/notes")]//API-Application programming interface
-        public IActionResult Notes([FromBody] NotesModel notes)
+        public async Task<IActionResult> Notes([FromBody] NotesModel notes)
         {
             try
             {
-                string result = this.manager.Notes(notes);
+                string result = await this.manager.Notes(notes);
 
                 if (result.Equals("Notes are added Successfully"))
                 {

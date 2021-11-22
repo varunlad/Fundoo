@@ -4,7 +4,9 @@ using FundooRepository.Interface;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooRepository.Repository
 {
@@ -18,19 +20,24 @@ namespace FundooRepository.Repository
         }
         public IConfiguration Configuration { get; }
 
-        public string Notes(NotesModel notes)
+        public async Task<string> Notes(NotesModel notes)
         {
             try
             {
-                if (notes != null)
+                var validUserID = this.userContext.UsersTable.Where(x => x.UserId == notes.UserID).FirstOrDefault();
+                if (validUserID != null)
                 {
-                    // Add the data to the database
-                    this.userContext.Add(notes);
-                    // Save the change in database
-                    this.userContext.SaveChanges();
-                    return "Notes are added Successfully";
+                    if (notes != null)
+                    {
+                        // Add the data to the database
+                        this.userContext.Add(notes);
+                        // Save the change in database
+                        await this.userContext.SaveChangesAsync();
+                        return "Notes are added Successfully";
+                    }
+                    return "Notes are not added";
                 }
-                return "Notes are not added";
+                return "No such UserId Present in the Database";
             }
             catch (ArgumentNullException ex)
             {

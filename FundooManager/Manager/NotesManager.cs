@@ -4,6 +4,7 @@ using FundooRepository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooManager.Manager
 {
@@ -14,11 +15,11 @@ namespace FundooManager.Manager
         {
             this.repository = repository;
         }
-        public string Notes(NotesModel notes)
+        public async Task<string> Notes(NotesModel notes)
         {
             try
             {
-                return this.repository.Notes(notes);
+                return await this.repository.Notes(notes);
             }
             catch (Exception e)
             {
