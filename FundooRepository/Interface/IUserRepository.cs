@@ -9,8 +9,8 @@ namespace FundooRepository.Interface
         IConfiguration Configuration { get; }
 
         Task<string> Register(RegisterModel userData);
-        string LogIn(LoginModel login);
+        object LogIn(LoginModel logIn);
         Task<string> ResetPassword(ResetPasswordModel reset);
-        Task<string> ForgotPassword(string email);
+        string ForgotPassword(string email);
     }
 }

@@ -28,11 +28,11 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public string LogIn(LoginModel login)
+        public object LogIn(LoginModel logIn)
         {
             try
             {
-                return this.repository.LogIn(login);
+                return this.repository.LogIn(logIn);
             }
             catch (Exception e)
             {
@@ -50,11 +50,11 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> ForgotPassword(string email)
+        public string ForgotPassword(string email)
         {
             try
             {
-                return await this.repository.ForgotPassword(email);
+                return this.repository.ForgotPassword(email);
             }
             catch (Exception e)
             {

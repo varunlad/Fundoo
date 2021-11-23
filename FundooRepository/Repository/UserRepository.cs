@@ -3,10 +3,13 @@ using FundooModel;
 using FundooRepository.Context;
 using FundooRepository.Interface;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,35 +55,47 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string LogIn(LoginModel logIn)//here class is used as datatype and its parameter
+        public object LogIn(LoginModel logIn)//here class is used as datatype and its parameter
         {
             try
             {
-                var validEmail = this.userContext.UsersTable.Where(x => x.Email == logIn.Email).FirstOrDefault();
-                logIn.Password = EncryptPassword(logIn.Password);
-                var validPassword = this.userContext.UsersTable.Where(x => x.Password == logIn.Password).FirstOrDefault();
-                if (validEmail == null && validPassword == null)
+                var existEmail = this.userContext.UsersTable.Where(x => x.Email == logIn.Email).SingleOrDefault();
+                if (existEmail != null)
                 {
-                    return "Login UnSuccessful please enter correct Email and Password";
+                    logIn.Password = this.EncryptPassword(logIn.Password);
+                    var existingPassword = this.userContext.UsersTable.Where(x => x.Password == logIn.Password).SingleOrDefault();
+                    if (existingPassword == null)
+                    {
+                        return new { message = "Login Unsuccessful" };
+                    }
+                    //Call generate token method
+                    string token = JWTTokenGeneration(existingPassword.Email);
+                    existingPassword.Password = null;
+                    return new { message = "Login Successful", Token = token, Data = existingPassword };
                 }
-                else if (validEmail == null && validPassword != null)
-                {
-                    return "Login UnSuccessful Please Enter correct Email ";
-                }
-                else if (validEmail != null && validPassword == null)
-                {
-                    return "Login UnSuccessful Please Enter correct Password ";
-                }
-                else
-                {
-                    return "Login Successful ";
-                }
+                return new { message = "Email Id not Exist,Please Register first" };
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
-
+        }
+        public string JWTTokenGeneration(string email)
+        {
+            byte[] key = Encoding.UTF8.GetBytes(this.Configuration["SecretKey"]);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
+            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                new Claim(ClaimTypes.Name, email)
+            }),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
+            return handler.WriteToken(token);
         }
         public async Task<string> ResetPassword(ResetPasswordModel reset)
         {
@@ -120,7 +135,7 @@ namespace FundooRepository.Repository
         //SMTP (Simple Mail Transfer Protocol) is a part of the application layer of the TCP/IP protocol.
         //It is an Internet standard for electronic mail (email) transmission. The default TCP port used by SMTP is 25 and the SMTP
         //connections secured by SSL(Security socket layer), known as SMTPS, uses the default to port 465.
-        public async Task<string> ForgotPassword(string email)
+        public string ForgotPassword(string email)
         {
             try
             {

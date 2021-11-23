@@ -44,20 +44,21 @@ namespace FundooNotesDemo.Controller
         {
             try
             {
-                string result = this.manager.LogIn(login);
+                var result = this.manager.LogIn(login);
 
-                if (result.Equals("Login Successful "))
+                if (result.Equals("Login Successful"))
+                //if (result.message == "Login Successful")
                 {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                    return this.Ok(new { Status = true, result });
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                    return this.BadRequest(new { Status = false, result });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+                return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
         [HttpPut]
@@ -84,11 +85,11 @@ namespace FundooNotesDemo.Controller
         }
         [HttpPost]
         [Route("api/forgot")]
-        public async Task<IActionResult> ForgotPassword(string email)
+        public IActionResult ForgotPassword(string email)
         {
             try
             {
-                string result = await this.manager.ForgotPassword(email);
+                string result =  this.manager.ForgotPassword(email);
 
                 if (result.Equals("Email send"))
                 {
