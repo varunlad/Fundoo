@@ -13,5 +13,7 @@ namespace FundooRepository.Interface
         Task<string> NoteArchive(NotesModel noteId);
         Task<string> Updatecolor(NotesModel colorupdate);
         Task<string> Pinned(NotesModel notesId);
+        Task<string> Trash(NotesModel notesId);
+        Task<string> PermanantRemove(NotesModel notesId);
     }
 }

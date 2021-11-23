@@ -70,5 +70,27 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public async Task<string> PermanantRemove(NotesModel notes)
+        {
+            try
+            {
+                return await this.repository.PermanantRemove(notes);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public async Task<string> Trash(NotesModel notes)
+        {
+            try
+            {
+                return await this.repository.Trash(notes);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

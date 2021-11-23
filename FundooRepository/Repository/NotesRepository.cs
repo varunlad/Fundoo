@@ -174,5 +174,72 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> Trash(NotesModel notesId)
+        {
+            try
+            {
+                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId.NoteID).FirstOrDefault();
+                if (ValidNoteId != null)
+                {
+                    if (ValidNoteId.Trash == false)
+                    {
+                        ValidNoteId.Trash = true;
+                        if (ValidNoteId.Archieve == true)
+                        {
+                            ValidNoteId.Archieve = false;
+                            this.userContext.Notes.Update(ValidNoteId);
+                            await this.userContext.SaveChangesAsync();
+                            return "Notes unarchieved and Trash";
+                        }
+                        else if (ValidNoteId.Pin == true)
+                        {
+                            ValidNoteId.Pin = false;
+                            this.userContext.Notes.Update(ValidNoteId);
+                            await this.userContext.SaveChangesAsync();
+                            return "Notes unpined and Trash";
+                        }
+                        else
+                        {
+                            this.userContext.Notes.Update(ValidNoteId);
+                            await this.userContext.SaveChangesAsync();
+                            return "Note Trash";
+                        }
+                    }
+                    else
+                    {
+                        ValidNoteId.Trash = false;
+                        this.userContext.Notes.Update(ValidNoteId);
+                        await this.userContext.SaveChangesAsync();
+                        return "Note Remove from Trash";
+                    }
+                }
+                return "This note does not exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> PermanantRemove(NotesModel notesId)
+        {
+            try
+            {
+                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId.NoteID).FirstOrDefault();
+                if (ValidNoteId != null)
+                {
+                    if (ValidNoteId.Trash == true)
+                    {
+                        this.userContext.Notes.Remove(ValidNoteId);
+                        await this.userContext.SaveChangesAsync();
+                        return "Notes is Permanant Removed";
+                    }
+                }
+                return "This note does not exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

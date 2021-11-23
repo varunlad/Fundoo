@@ -141,5 +141,57 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/notetrash")]//API-Application programming interface
+        public async Task<IActionResult> Trash(NotesModel notes)
+        {
+            try
+            {
+                string result = await this.manager.Trash(notes);
+
+                if (result.Equals("Note Trash"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else if (result.Equals("Notes unarchieved and Trash"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else if (result.Equals("Note Remove from Trash"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPut]
+        [Route("api/permanantnotetrash")]//API-Application programming interface
+        public async Task<IActionResult> PermanantRemove(NotesModel notes)
+        {
+            try
+            {
+                string result = await this.manager.PermanantRemove(notes);
+
+                if (result.Equals("Notes is Permanant Removed"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

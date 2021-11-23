@@ -10,5 +10,7 @@ namespace FundooManager.Interface
         Task<string> NoteArchive(NotesModel notes);
         Task<string> UpdateColor(NotesModel notes);
         Task<string> Pinned(NotesModel notesId);
+        Task<string> Trash(NotesModel notes);
+        Task<string> PermanantRemove(NotesModel notes);
     }
 }
