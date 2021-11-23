@@ -109,5 +109,70 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> Updatecolor(NotesModel colorupdate)
+        {
+            try
+            {
+                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == colorupdate.NoteID).FirstOrDefault();
+                if (validNotesID != null)
+                {
+                    if (colorupdate != null)
+                    {
+                        validNotesID.Color = colorupdate.Color;
+                        // Add the data to the database
+                        this.userContext.Update(validNotesID);
+                        // Save the change in database
+                        await this.userContext.SaveChangesAsync();
+
+                        return "color has Updated";
+                    }
+                    return "color are not updated";
+                }
+                return "NoteID Does Not Exits";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> Pinned(NotesModel notesId)
+        {
+            try
+            {
+                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId.NoteID).FirstOrDefault();
+                if (ValidNoteId != null)
+                {
+                    if (ValidNoteId.Pin == false)
+                    {
+                        ValidNoteId.Pin = true;
+                        if (ValidNoteId.Archieve == true)
+                        {
+                            ValidNoteId.Archieve = false;
+                            this.userContext.Notes.Update(ValidNoteId);
+                            await this.userContext.SaveChangesAsync();
+                            return "Notes unarchieved and pinned";
+                        }
+                        else
+                        {
+                            this.userContext.Notes.Update(ValidNoteId);
+                            await this.userContext.SaveChangesAsync();
+                            return "Note pinned";
+                        }
+                    }
+                    else
+                    {
+                        ValidNoteId.Pin = false;
+                        this.userContext.Notes.Update(ValidNoteId);
+                        await this.userContext.SaveChangesAsync();
+                        return "Note unpinned";
+                    }
+                }
+                return "This note does not exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

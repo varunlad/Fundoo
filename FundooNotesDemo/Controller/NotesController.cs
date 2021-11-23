@@ -89,5 +89,57 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/updatecolor")]//API-Application programming interface
+        public async Task<IActionResult> UpdateColor([FromBody] NotesModel notes)
+        {
+            try
+            {
+                string result = await this.manager.UpdateColor(notes);
+
+                if (result.Equals("color has Updated"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPut]
+        [Route("api/notepin")]//API-Application programming interface
+        public async Task<IActionResult> Pinned(NotesModel notes)
+        {
+            try
+            {
+                string result = await this.manager.Pinned(notes);
+
+                if (result.Equals("Note pinned"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else if (result.Equals("Notes unarchieved and pinned"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else if (result.Equals("Note unpinned"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
     }
 }
