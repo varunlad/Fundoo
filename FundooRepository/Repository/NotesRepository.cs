@@ -241,5 +241,31 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> Remainder(NotesModel notes)
+        {
+            try
+            {
+                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == notes.NoteID).FirstOrDefault();
+                if (validNotesID != null)
+                {
+                    if (notes != null)
+                    {
+                        validNotesID.Remainder = notes.Remainder;
+                        // Add the data to the database
+                        this.userContext.Update(validNotesID);
+                        // Save the change in database
+                        await this.userContext.SaveChangesAsync();
+
+                        return "Remainder is Set";
+                    }
+                    return "Remainder is not Set";
+                }
+                return "NoteID Does Not Exits";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

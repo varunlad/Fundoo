@@ -12,5 +12,6 @@ namespace FundooManager.Interface
         Task<string> Pinned(NotesModel notesId);
         Task<string> Trash(NotesModel notes);
         Task<string> PermanantRemove(NotesModel notes);
+        Task<string> Remainder(NotesModel notes);
     }
 }

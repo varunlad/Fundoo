@@ -193,5 +193,27 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/remainder")]//API-Application programming interface
+        public async Task<IActionResult> Remainder([FromBody] NotesModel notes)
+        {
+            try
+            {
+                string result = await this.manager.Remainder(notes);
+
+                if (result.Equals("Remainder is Set"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
     }
 }
