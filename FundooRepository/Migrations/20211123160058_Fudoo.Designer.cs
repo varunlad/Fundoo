@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FundooRepository.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20211122145514_FundooNotes")]
-    partial class FundooNotes
+    [Migration("20211123160058_Fudoo")]
+    partial class Fudoo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,9 @@ namespace FundooRepository.Migrations
                     b.Property<bool>("Pin")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("Remainder")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -52,7 +55,7 @@ namespace FundooRepository.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("NotesTable");
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("FundooModel.RegisterModel", b =>
@@ -84,7 +87,7 @@ namespace FundooRepository.Migrations
 
             modelBuilder.Entity("FundooModel.NotesModel", b =>
                 {
-                    b.HasOne("FundooModel.RegisterModel", "registraterModel")
+                    b.HasOne("FundooModel.RegisterModel", "RegisterModel")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)

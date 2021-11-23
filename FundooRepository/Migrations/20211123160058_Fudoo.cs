@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FundooRepository.Migrations
 {
-    public partial class FundooNotes : Migration
+    public partial class Fudoo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,7 +24,7 @@ namespace FundooRepository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NotesTable",
+                name: "Notes",
                 columns: table => new
                 {
                     NoteID = table.Column<int>(nullable: false)
@@ -32,6 +32,7 @@ namespace FundooRepository.Migrations
                     UserID = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     AddNotes = table.Column<string>(nullable: true),
+                    Remainder = table.Column<string>(nullable: true),
                     Color = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
                     Pin = table.Column<bool>(nullable: false),
@@ -40,9 +41,9 @@ namespace FundooRepository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NotesTable", x => x.NoteID);
+                    table.PrimaryKey("PK_Notes", x => x.NoteID);
                     table.ForeignKey(
-                        name: "FK_NotesTable_UsersTable_UserID",
+                        name: "FK_Notes_UsersTable_UserID",
                         column: x => x.UserID,
                         principalTable: "UsersTable",
                         principalColumn: "UserId",
@@ -50,15 +51,15 @@ namespace FundooRepository.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_NotesTable_UserID",
-                table: "NotesTable",
+                name: "IX_Notes_UserID",
+                table: "Notes",
                 column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "NotesTable");
+                name: "Notes");
 
             migrationBuilder.DropTable(
                 name: "UsersTable");

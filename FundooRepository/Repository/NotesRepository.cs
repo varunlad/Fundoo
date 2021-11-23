@@ -48,7 +48,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var validNotesID = this.userContext.NotesTable.Where(x => x.NoteID == update.NoteID).FirstOrDefault();
+                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == update.NoteID).FirstOrDefault();
                 if (update != null)
                 {
                     validNotesID.Title = update.Title;
@@ -71,7 +71,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var archivedNote = this.userContext.NotesTable.Where(x => x.NoteID == noteId.NoteID).FirstOrDefault();
+                var archivedNote = this.userContext.Notes.Where(x => x.NoteID == noteId.NoteID).FirstOrDefault();
                 if (archivedNote != null)
                 {
                     if (archivedNote.Archieve == false)
@@ -80,13 +80,13 @@ namespace FundooRepository.Repository
                         if (archivedNote.Pin == true)
                         {
                             archivedNote.Pin = false;
-                            this.userContext.NotesTable.Update(archivedNote);
+                            this.userContext.Notes.Update(archivedNote);
                             await this.userContext.SaveChangesAsync();
                             return "Notes unpinned and moved to Archived";
                         }
                         else
                         {
-                            this.userContext.NotesTable.Update(archivedNote);
+                            this.userContext.Notes.Update(archivedNote);
                             await this.userContext.SaveChangesAsync();
                             return "Note archived";
                         }
@@ -94,7 +94,7 @@ namespace FundooRepository.Repository
                     else
                     {
                         archivedNote.Archieve = false;
-                        this.userContext.NotesTable.Update(archivedNote);
+                        this.userContext.Notes.Update(archivedNote);
                         await this.userContext.SaveChangesAsync();
                         return "Note unarchived";
                     }

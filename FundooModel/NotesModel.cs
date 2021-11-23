@@ -7,16 +7,18 @@ using System.Text;
 
 namespace FundooModel
 {
-   public class NotesModel
+    public class NotesModel
     {
         [Key]
         public int NoteID { get; set; }
         // Foreign key to UserID
+
+        [ForeignKey("RegisterModel")]
         public int UserID { get; set; }
-        [ForeignKey("UserID")]
-        public RegisterModel registraterModel { get; set; }
+        public virtual RegisterModel RegisterModel { get; set; }
         public string Title { get; set; }
         public string AddNotes { get; set; }
+        public string Remainder { get; set; }
         public string Color { get; set; }
         public string Image { get; set; }
 
