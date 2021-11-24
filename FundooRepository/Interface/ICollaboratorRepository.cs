@@ -1,5 +1,6 @@
 ﻿using FundooModel;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FundooRepository.Interface
@@ -9,5 +10,7 @@ namespace FundooRepository.Interface
         IConfiguration Configuration { get; }
 
         Task<string> Collaborator(CollaboratorModel collaborator);
+        Task<string> DeleteCollaborator(int collaborator);
+        List<string> GetCollaboratedEmails(int collaborator);
     }
 }

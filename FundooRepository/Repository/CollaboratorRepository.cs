@@ -37,5 +37,57 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> DeleteCollaborator(int collaborator)
+        {
+            try
+            {
+                var validCollabID = this.userContext.Collaborator.Where(x => x.CollaboratorID == collaborator).FirstOrDefault();
+                if (validCollabID != null)
+                {
+                    if (collaborator != 0)
+                    {
+                        // Add the data to the database
+                        this.userContext.Remove(validCollabID);
+                        // Save the change in database
+                        await this.userContext.SaveChangesAsync();
+                        return "Email is Deleted";
+                    }
+                    return "Email is not added";
+                }
+                return "Collaborator ID Does not Deleted";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public List<string> GetCollaboratedEmails(int collaborator)
+        {
+            try
+            {
+
+                List<string> listofEmails = new List<string>();
+                if (collaborator != 0)
+                {
+                    IEnumerable<CollaboratorModel> notes = from x in this.userContext.Collaborator where x.NoteID == collaborator select x;
+                    foreach (var note in notes)
+                    {
+
+                        if (note.NoteID != 0)
+                        {
+                            string result = note.NoteID + " Email " + note.EmailID;
+                            listofEmails.Add(result);
+                        }
+
+                    }
+                    return listofEmails;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

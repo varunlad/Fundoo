@@ -26,5 +26,27 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public async Task<string> DeleteCollaborator(int collaborator)
+        {
+            try
+            {
+                return await this.repository.DeleteCollaborator(collaborator);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public List<string> GetCollaboratedEmails(int noteid)
+        {
+            try
+            {
+                return this.repository.GetCollaboratedEmails(noteid);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
