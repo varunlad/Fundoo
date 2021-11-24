@@ -28,11 +28,22 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public object LogIn(LoginModel logIn)
+        public string LogIn(LoginModel logIn)
         {
             try
             {
                 return this.repository.LogIn(logIn);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public string JWTToken(string email)
+        {
+            try
+            {
+                return this.repository.JWTToken(email);
             }
             catch (Exception e)
             {

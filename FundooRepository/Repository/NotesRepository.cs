@@ -152,8 +152,9 @@ namespace FundooRepository.Repository
                             await this.userContext.SaveChangesAsync();
                             return "Notes unarchieved and pinned";
                         }
-                        else
+                        else if(ValidNoteId.Trash == true)
                         {
+                            ValidNoteId.Trash = false;
                             this.userContext.Notes.Update(ValidNoteId);
                             await this.userContext.SaveChangesAsync();
                             return "Note pinned";

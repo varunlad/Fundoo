@@ -4,6 +4,7 @@ using FundooRepository.Context;
 using FundooRepository.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -55,32 +56,34 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public object LogIn(LoginModel logIn)//here class is used as datatype and its parameter
+        public string LogIn(LoginModel logIn)//here class is used as datatype and its parameter
         {
             try
             {
-                var existEmail = this.userContext.UsersTable.Where(x => x.Email == logIn.Email).SingleOrDefault();
-                if (existEmail != null)
+                var validEmail = this.userContext.UsersTable.Where(x => x.Email == logIn.Email).FirstOrDefault();
+                if (validEmail != null)
                 {
-                    logIn.Password = this.EncryptPassword(logIn.Password);
-                    var existingPassword = this.userContext.UsersTable.Where(x => x.Password == logIn.Password).SingleOrDefault();
-                    if (existingPassword == null)
+                    logIn.Password = EncryptPassword(logIn.Password);
+                    var validPassword = this.userContext.UsersTable.Where(x => x.Password == logIn.Password).FirstOrDefault();
+                    if (validPassword != null)
                     {
-                        return new { message = "Login Unsuccessful" };
+                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                        IDatabase database = connectionMultiplexer.GetDatabase();
+                        database.StringSet(key: "First Name", validPassword.FirstName);
+                        database.StringSet(key: "Last Name", validPassword.LastName);
+                        return "Login Successful";
                     }
-                    //Call generate token method
-                    string token = JWTTokenGeneration(existingPassword.Email);
-                    existingPassword.Password = null;
-                    return new { message = "Login Successful", Token = token, Data = existingPassword };
+                    return "Enter Correct Password";
                 }
-                return new { message = "Email Id not Exist,Please Register first" };
+                return "Email Incorrect";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
+
         }
-        public string JWTTokenGeneration(string email)
+        public string JWTToken(string email)
         {
             byte[] key = Encoding.UTF8.GetBytes(this.Configuration["SecretKey"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);

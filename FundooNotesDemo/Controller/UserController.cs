@@ -1,6 +1,7 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,21 +45,26 @@ namespace FundooNotesDemo.Controller
         {
             try
             {
-                var result = this.manager.LogIn(login);
+                string result = this.manager.LogIn(login);
 
                 if (result.Equals("Login Successful"))
-                //if (result.message == "Login Successful")
                 {
-                    return this.Ok(new { Status = true, result });
+                    ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                    IDatabase database = connectionMultiplexer.GetDatabase();
+                    string firstName = database.StringGet("First Name");
+                    string lastName = database.StringGet("Last Name");
+                    RegisterModel data = new RegisterModel { FirstName = firstName, LastName = lastName, Email = login.Email };
+                    string token = this.manager.JWTToken(login.Email);
+                    return this.Ok(new { Status = true, Message = result, Data = data, Token = token });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, result });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
                 }
             }
             catch (Exception ex)
             {
-                return this.NotFound(new { Status = false, Message = ex.Message });
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
         [HttpPut]
