@@ -215,5 +215,71 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+        [HttpGet]
+        [Route("api/getnotes")]//API-Application programming interface
+        public IActionResult GetUserNotes(int userid)
+        {
+            try
+            {
+                List<string> result = this.manager.GetUserNotes(userid);
+
+                if (result.Count != 0)
+                {
+                    return this.Ok(new { Status = true, Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpGet]
+        [Route("api/getarchievenotes")]//API-Application programming interface
+        public IActionResult GetArchieveNotes(int userid)
+        {
+            try
+            {
+                List<string> result = this.manager.GetArchieveNotes(userid);
+
+                if (result.Count != 0)
+                {
+                    return this.Ok(new { Status = true, Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpGet]
+        [Route("api/gettrashnotes")]//API-Application programming interface
+        public IActionResult GetTrashNotes(int userid)
+        {
+            try
+            {
+                List<string> result = this.manager.GetTrashNotes(userid);
+
+                if (result.Count != 0)
+                {
+                    return this.Ok(new { Status = true, Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

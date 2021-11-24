@@ -103,5 +103,38 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public List<string> GetUserNotes(int userid)
+        {
+            try
+            {
+                return this.repository.GetUserNotes(userid);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public List<string> GetArchieveNotes(int userid)
+        {
+            try
+            {
+                return this.repository.GetArchieveNotes(userid);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public List<string> GetTrashNotes(int userid)
+        {
+            try
+            {
+                return this.repository.GetTrashNotes(userid);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

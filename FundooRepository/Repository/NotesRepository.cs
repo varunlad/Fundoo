@@ -268,5 +268,92 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public List<string> GetUserNotes(int userid)
+        {
+            try
+            {
+
+                List<string> listofnotes = new List<string>();
+                if (userid != 0)
+                {
+                    IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
+                    foreach (var note in notes)
+                    {
+
+                        if (note.Trash != true && note.Archieve != true)
+                        {
+                            string result = note.NoteID + " Tilte: " + note.Title + "  AddNotes: " + note.AddNotes + "  Archieve: " + note.Archieve + "  Trash : " + note.Trash + "  Note Pined: " + note.Pin +
+                              "  Remainder: " + note.Remainder + "  Color: " + note.Color;
+                            listofnotes.Add(result);
+                        }
+
+                    }
+                    return listofnotes;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public List<string> GetArchieveNotes(int userid)
+        {
+            try
+            {
+
+                List<string> listofnotes = new List<string>();
+                if (userid != 0)
+                {
+                    IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
+                    foreach (var note in notes)
+                    {
+
+                        if (note.Archieve == true)
+                        {
+                            string result = note.NoteID + " Tilte: " + note.Title + "  AddNotes: " + note.AddNotes + "  Archieve: " + note.Archieve + "  Trash : " + note.Trash + "  Note Pined: " + note.Pin +
+                                 "  Remainder: " + note.Remainder + "  Color: " + note.Color;
+                            listofnotes.Add(result);
+                        }
+
+                    }
+                    return listofnotes;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public List<string> GetTrashNotes(int userid)
+        {
+            try
+            {
+
+                List<string> listofnotes = new List<string>();
+                if (userid != 0)
+                {
+                    IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
+                    foreach (var note in notes)
+                    {
+
+                        if (note.Trash == true)
+                        {
+                            string result = note.NoteID + " Tilte: " + note.Title + "  AddNotes: " + note.AddNotes + "  Archieve: " + note.Archieve + "  Trash : " + note.Trash + "  Note Pined: " + note.Pin +
+                                 "  Remainder: " + note.Remainder + "  Color: " + note.Color;
+                            listofnotes.Add(result);
+                        }
+
+                    }
+                    return listofnotes;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FundooModel;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FundooRepository.Interface
@@ -16,5 +17,8 @@ namespace FundooRepository.Interface
         Task<string> Trash(NotesModel notesId);
         Task<string> PermanantRemove(NotesModel notesId);
         Task<string> Remainder(NotesModel notes);
+        List<string> GetUserNotes(int userid);
+        List<string> GetArchieveNotes(int userid);
+        List<string> GetTrashNotes(int userid);
     }
 }
