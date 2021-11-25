@@ -1,5 +1,6 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -279,6 +280,25 @@ namespace FundooNotesDemo.Controller
             catch (Exception ex)
             {
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPut]
+        [Route("api/addimage")]
+        public async Task<IActionResult> AddImage(int notesId, IFormFile image)
+        {
+            try
+            {
+                string result = await this.manager.AddImage(notesId, image);
+                if (result == "Image added Successfully")
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+
+                return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = true, Message = ex.Message });
             }
         }
     }

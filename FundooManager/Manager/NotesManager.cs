@@ -1,6 +1,7 @@
 ﻿using FundooManager.Interface;
 using FundooModel;
 using FundooRepository.Interface;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -130,6 +131,17 @@ namespace FundooManager.Manager
             try
             {
                 return this.repository.GetTrashNotes(userid);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public Task<string> AddImage(int noteId, IFormFile form)
+        {
+            try
+            {
+                return this.repository.AddImage(noteId, form);
             }
             catch (Exception e)
             {

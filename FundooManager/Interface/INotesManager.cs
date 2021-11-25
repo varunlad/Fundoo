@@ -1,4 +1,5 @@
 ﻿using FundooModel;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,5 +18,6 @@ namespace FundooManager.Interface
         List<string> GetUserNotes(int userid);
         List<string> GetArchieveNotes(int userid);
         List<string> GetTrashNotes(int userid);
+        Task<string> AddImage(int noteId, IFormFile form);
     }
 }
