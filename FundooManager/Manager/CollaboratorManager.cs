@@ -37,11 +37,11 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public List<string> GetCollaboratedEmails(int noteid)
+        public IEnumerable<CollaboratorModel> GetCollaboratedEmails(int noteId)
         {
             try
             {
-                return this.repository.GetCollaboratedEmails(noteid);
+                return this.repository.GetCollaboratedEmails(noteId);
             }
             catch (Exception e)
             {

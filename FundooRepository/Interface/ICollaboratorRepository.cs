@@ -11,6 +11,6 @@ namespace FundooRepository.Interface
 
         Task<string> Collaborator(CollaboratorModel collaborator);
         Task<string> DeleteCollaborator(int collaborator);
-        List<string> GetCollaboratedEmails(int collaborator);
+        IEnumerable<CollaboratorModel> GetCollaboratedEmails(int noteId);
     }
 }

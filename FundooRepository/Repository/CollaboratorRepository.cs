@@ -45,43 +45,27 @@ namespace FundooRepository.Repository
                 var validCollabID = this.userContext.Collaborator.Where(x => x.CollaboratorID == collaborator).FirstOrDefault();
                 if (validCollabID != null)
                 {
-                    if (collaborator != 0)
-                    {
-                        // Add the data to the database
-                        this.userContext.Remove(validCollabID);
-                        // Save the change in database
-                        await this.userContext.SaveChangesAsync();
-                        return "Email is Deleted";
-                    }
-                    return "Email is not added";
+                    // Add the data to the database
+                    this.userContext.Remove(validCollabID);
+                    // Save the change in database
+                    await this.userContext.SaveChangesAsync();
+                    return "Email is Deleted";
                 }
-                return "Collaborator ID Does not Deleted";
+                return "Email is not Deleted";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public List<string> GetCollaboratedEmails(int collaborator)
+        public IEnumerable<CollaboratorModel> GetCollaboratedEmails(int noteId)
         {
             try
             {
-
-                List<string> listofEmails = new List<string>();
-                if (collaborator != 0)
+                IEnumerable<CollaboratorModel> Collaborator = from x in this.userContext.Collaborator where x.NoteID == noteId select x;
+                if (Collaborator != null)
                 {
-                    IEnumerable<CollaboratorModel> notes = from x in this.userContext.Collaborator where x.NoteID == collaborator select x;
-                    foreach (var note in notes)
-                    {
-
-                        if (note.NoteID != 0)
-                        {
-                            string result = note.NoteID + " Email " + note.EmailID;
-                            listofEmails.Add(result);
-                        }
-
-                    }
-                    return listofEmails;
+                    return Collaborator;
                 }
                 return null;
             }

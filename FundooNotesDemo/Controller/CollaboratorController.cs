@@ -65,15 +65,15 @@ namespace FundooNotesDemo.Controller
         {
             try
             {
-                List<string> result = this.manager.GetCollaboratedEmails(noteid);
+                IEnumerable<CollaboratorModel> result = this.manager.GetCollaboratedEmails(noteid);
 
-                if (result.Count != 0)
+                if (result.Equals(null))
                 {
-                    return this.Ok(new { Status = true, Data = result });
+                    return this.BadRequest(new { Status = false, Data = result });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Data = result });
+                    return this.Ok(new { Status = true, Data = result });
                 }
             }
             catch (Exception ex)

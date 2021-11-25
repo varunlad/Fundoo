@@ -8,6 +8,6 @@ namespace FundooManager.Interface
     {
         Task<string> Collaborator(CollaboratorModel collaborator);
         Task<string> DeleteCollaborator(int collaborator);
-        List<string> GetCollaboratedEmails(int noteid);
+        IEnumerable<CollaboratorModel> GetCollaboratedEmails(int noteId);
     }
 }
