@@ -38,7 +38,7 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> NoteArchive(NotesModel notes)
+        public async Task<string> NoteArchive(int notes)
         {
             try
             {
@@ -49,62 +49,62 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> UpdateColor(NotesModel notes)
+        public async Task<string> Pinned(int notesId)
         {
             try
             {
-                return await this.repository.Updatecolor(notes);
+                return await this.repository.Pinned(notesId);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> Pinned(NotesModel notes)
+        public async Task<string> Updatecolor(int noteId, string colour)
         {
             try
             {
-                return await this.repository.Pinned(notes);
+                return await this.repository.Updatecolor(noteId, colour);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> PermanantRemove(NotesModel notes)
+        public async Task<string> PermanantRemove(int notesId)
         {
             try
             {
-                return await this.repository.PermanantRemove(notes);
+                return await this.repository.PermanantRemove(notesId);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> Trash(NotesModel notes)
+        public async Task<string> Trash(int notesId)
         {
             try
             {
-                return await this.repository.Trash(notes);
+                return await this.repository.Trash(notesId);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-        public async Task<string> Remainder(NotesModel notes)
+        public async Task<string> Remainder(int noteId, string remainder)
         {
             try
             {
-                return await this.repository.Remainder(notes);
+                return await this.repository.Remainder(noteId, remainder);
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-        public List<string> GetUserNotes(int userid)
+        public IEnumerable<NotesModel> GetUserNotes(int userid)
         {
             try
             {
@@ -115,7 +115,8 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public List<string> GetArchieveNotes(int userid)
+        public IEnumerable<NotesModel> GetArchieveNotes(int userid)
+
         {
             try
             {
@@ -126,11 +127,22 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
-        public List<string> GetTrashNotes(int userid)
+        public IEnumerable<NotesModel> GetTrashNotes(int userid)
         {
             try
             {
                 return this.repository.GetTrashNotes(userid);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        public IEnumerable<NotesModel> GetRemainder(int userid)
+        {
+            try
+            {
+                return this.repository.GetRemainder(userid);
             }
             catch (Exception e)
             {

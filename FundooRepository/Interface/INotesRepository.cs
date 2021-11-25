@@ -11,16 +11,17 @@ namespace FundooRepository.Interface
         IConfiguration Configuration { get; }
 
         Task<string> Notes(NotesModel notes);
-        Task<string> Update(NotesModel update);
-        Task<string> NoteArchive(NotesModel noteId);
-        Task<string> Updatecolor(NotesModel colorupdate);
-        Task<string> Pinned(NotesModel notesId);
-        Task<string> Trash(NotesModel notesId);
-        Task<string> PermanantRemove(NotesModel notesId);
-        Task<string> Remainder(NotesModel notes);
-        List<string> GetUserNotes(int userid);
-        List<string> GetArchieveNotes(int userid);
-        List<string> GetTrashNotes(int userid);
+        Task<string> Update(NotesModel Title);
+        Task<string> Updatecolor(int noteId, string colour);
+        Task<string> NoteArchive(int noteId);
+        Task<string> Pinned(int notesId);
+        Task<string> Trash(int notesId);
+        Task<string> PermanantRemove(int notesId);
+        Task<string> Remainder(int noteId, string remainder);
+        IEnumerable<NotesModel> GetUserNotes(int userid);
+        IEnumerable<NotesModel> GetArchieveNotes(int userid);
+        IEnumerable<NotesModel> GetTrashNotes(int userid);
         Task<string> AddImage(int noteId, IFormFile form);
+        IEnumerable<NotesModel> GetRemainder(int userid);
     }
 }

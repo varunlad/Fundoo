@@ -9,15 +9,16 @@ namespace FundooManager.Interface
     {
         Task<string> Notes(NotesModel notes);
         Task<string> Update(NotesModel Title);
-        Task<string> NoteArchive(NotesModel notes);
-        Task<string> UpdateColor(NotesModel notes);
-        Task<string> Pinned(NotesModel notesId);
-        Task<string> Trash(NotesModel notes);
-        Task<string> PermanantRemove(NotesModel notes);
-        Task<string> Remainder(NotesModel notes);
-        List<string> GetUserNotes(int userid);
-        List<string> GetArchieveNotes(int userid);
-        List<string> GetTrashNotes(int userid);
+        Task<string> Updatecolor(int noteId, string colour);
+        Task<string> NoteArchive(int noteId);
+        Task<string> Pinned(int noteId);
+        Task<string> Trash(int notesId);
+        Task<string> PermanantRemove(int notesId);
+        Task<string> Remainder(int noteId, string remainder);
+        IEnumerable<NotesModel> GetUserNotes(int userid);
+        IEnumerable<NotesModel> GetArchieveNotes(int userid);
+        IEnumerable<NotesModel> GetTrashNotes(int userid);
+        IEnumerable<NotesModel> GetRemainder(int userid);
         Task<string> AddImage(int noteId, IFormFile form);
     }
 }

@@ -27,20 +27,11 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var validUserID = this.userContext.UsersTable.Where(x => x.UserId == notes.UserID).FirstOrDefault();
-                if (validUserID != null)
-                {
-                    if (notes != null)
-                    {
-                        // Add the data to the database
-                        this.userContext.Add(notes);
-                        // Save the change in database
-                        await this.userContext.SaveChangesAsync();
-                        return "Notes are added Successfully";
-                    }
-                    return "Notes are not added";
-                }
-                return "No such UserId Present in the Database";
+                // Add the data to the database
+                this.userContext.Add(notes);
+                // Save the change in database
+                await this.userContext.SaveChangesAsync();
+                return "Notes are added Successfully";
             }
             catch (ArgumentNullException ex)
             {
@@ -70,11 +61,34 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> NoteArchive(NotesModel noteId)
+        public async Task<string> Updatecolor(int noteId, string colour)//int
         {
             try
             {
-                var archivedNote = this.userContext.Notes.Where(x => x.NoteID == noteId.NoteID).FirstOrDefault();
+                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == noteId).FirstOrDefault();
+                if (validNotesID != null)
+                {
+                    validNotesID.Color = colour;
+                    // Add the data to the database
+                    this.userContext.Update(validNotesID);
+                    // Save the change in database
+                    await this.userContext.SaveChangesAsync();
+
+                    return "color has Updated";
+                }
+                return "color are not updated";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> NoteArchive(int noteId)
+        {
+            try
+            {
+                string result;
+                var archivedNote = this.userContext.Notes.Where(x => x.NoteID == noteId).FirstOrDefault();
                 if (archivedNote != null)
                 {
                     if (archivedNote.Archieve == false)
@@ -83,66 +97,38 @@ namespace FundooRepository.Repository
                         if (archivedNote.Pin == true)
                         {
                             archivedNote.Pin = false;
-                            this.userContext.Notes.Update(archivedNote);
-                            await this.userContext.SaveChangesAsync();
-                            return "Notes unpinned and moved to Archived";
+                            result = "Notes unpinned and moved to Archived";
                         }
                         else
                         {
-                            this.userContext.Notes.Update(archivedNote);
-                            await this.userContext.SaveChangesAsync();
-                            return "Note archived";
+                            result = "Note archived";
                         }
                     }
                     else
                     {
                         archivedNote.Archieve = false;
-                        this.userContext.Notes.Update(archivedNote);
-                        await this.userContext.SaveChangesAsync();
-                        return "Note unarchived";
+                        result = "Note unarchived";
                     }
+                    this.userContext.Notes.Update(archivedNote);
+                    await this.userContext.SaveChangesAsync();
                 }
                 else
                 {
-                    return "This note does not exist";
+                    result = "This note does not exist";
                 }
+                return result;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Updatecolor(NotesModel colorupdate)
+        public async Task<string> Pinned(int notesId)
         {
             try
             {
-                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == colorupdate.NoteID).FirstOrDefault();
-                if (validNotesID != null)
-                {
-                    if (colorupdate != null)
-                    {
-                        validNotesID.Color = colorupdate.Color;
-                        // Add the data to the database
-                        this.userContext.Update(validNotesID);
-                        // Save the change in database
-                        await this.userContext.SaveChangesAsync();
-
-                        return "color has Updated";
-                    }
-                    return "color are not updated";
-                }
-                return "NoteID Does Not Exits";
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public async Task<string> Pinned(NotesModel notesId)
-        {
-            try
-            {
-                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId.NoteID).FirstOrDefault();
+                string result;
+                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId).FirstOrDefault();
                 if (ValidNoteId != null)
                 {
                     if (ValidNoteId.Pin == false)
@@ -151,38 +137,44 @@ namespace FundooRepository.Repository
                         if (ValidNoteId.Archieve == true)
                         {
                             ValidNoteId.Archieve = false;
-                            this.userContext.Notes.Update(ValidNoteId);
-                            await this.userContext.SaveChangesAsync();
-                            return "Notes unarchieved and pinned";
+                            result = "Notes unarchieved and pinned";
                         }
-                        else if(ValidNoteId.Trash == true)
+                        else if (ValidNoteId.Trash == true)
                         {
                             ValidNoteId.Trash = false;
-                            this.userContext.Notes.Update(ValidNoteId);
-                            await this.userContext.SaveChangesAsync();
-                            return "Note pinned";
+                            result = "Note removed from Trashed and pinned";
                         }
+                        else
+                        {
+                            result = "Note Pinned";
+                        }
+
                     }
                     else
                     {
                         ValidNoteId.Pin = false;
-                        this.userContext.Notes.Update(ValidNoteId);
-                        await this.userContext.SaveChangesAsync();
-                        return "Note unpinned";
+                        result = "Note unpinned";
                     }
+                    this.userContext.Notes.Update(ValidNoteId);
+                    await this.userContext.SaveChangesAsync();
                 }
-                return "This note does not exist";
+                else
+                {
+                    result = "This note does not exist";
+                }
+                return result;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Trash(NotesModel notesId)
+        public async Task<string> Trash(int notesId)
         {
             try
             {
-                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId.NoteID).FirstOrDefault();
+                string result;
+                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId).FirstOrDefault();
                 if (ValidNoteId != null)
                 {
                     if (ValidNoteId.Trash == false)
@@ -191,44 +183,43 @@ namespace FundooRepository.Repository
                         if (ValidNoteId.Archieve == true)
                         {
                             ValidNoteId.Archieve = false;
-                            this.userContext.Notes.Update(ValidNoteId);
-                            await this.userContext.SaveChangesAsync();
-                            return "Notes unarchieved and Trash";
+                            result = "Notes unarchieved and Trash";
                         }
                         else if (ValidNoteId.Pin == true)
                         {
                             ValidNoteId.Pin = false;
-                            this.userContext.Notes.Update(ValidNoteId);
-                            await this.userContext.SaveChangesAsync();
-                            return "Notes unpined and Trash";
+                            result = "Notes unpined and Trash";
                         }
                         else
                         {
-                            this.userContext.Notes.Update(ValidNoteId);
-                            await this.userContext.SaveChangesAsync();
-                            return "Note Trash";
+                            result = "Note Trash";
                         }
                     }
                     else
                     {
                         ValidNoteId.Trash = false;
-                        this.userContext.Notes.Update(ValidNoteId);
-                        await this.userContext.SaveChangesAsync();
-                        return "Note Remove from Trash";
+
+                        result = "Note Remove from Trash";
                     }
+                    this.userContext.Notes.Update(ValidNoteId);
+                    await this.userContext.SaveChangesAsync();
                 }
-                return "This note does not exist";
+                else
+                {
+                    result = "This note does not exist";
+                }
+                return result;
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> PermanantRemove(NotesModel notesId)
+        public async Task<string> PermanantRemove(int notesId)
         {
             try
             {
-                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId.NoteID).FirstOrDefault();
+                var ValidNoteId = this.userContext.Notes.Where(x => x.NoteID == notesId).FirstOrDefault();
                 if (ValidNoteId != null)
                 {
                     if (ValidNoteId.Trash == true)
@@ -245,53 +236,37 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Remainder(NotesModel notes)
+        public async Task<string> Remainder(int noteId, string remainder)//int ,string
         {
             try
             {
-                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == notes.NoteID).FirstOrDefault();
+                var validNotesID = this.userContext.Notes.Where(x => x.NoteID == noteId).FirstOrDefault();
                 if (validNotesID != null)
                 {
-                    if (notes != null)
-                    {
-                        validNotesID.Remainder = notes.Remainder;
-                        // Add the data to the database
-                        this.userContext.Update(validNotesID);
-                        // Save the change in database
-                        await this.userContext.SaveChangesAsync();
+                    validNotesID.Remainder = remainder;
+                    // Add the data to the database
+                    this.userContext.Update(validNotesID);
+                    // Save the change in database
+                    await this.userContext.SaveChangesAsync();
 
-                        return "Remainder is Set";
-                    }
-                    return "Remainder is not Set";
+                    return "Remainder is Set";
                 }
-                return "NoteID Does Not Exits";
+                return "Remainder is not Set";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public List<string> GetUserNotes(int userid)
+        public IEnumerable<NotesModel> GetUserNotes(int userid)
         {
             try
             {
 
-                List<string> listofnotes = new List<string>();
-                if (userid != 0)
+                IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
+                if (notes != null)
                 {
-                    IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
-                    foreach (var note in notes)
-                    {
-
-                        if (note.Trash != true && note.Archieve != true)
-                        {
-                            string result = note.NoteID + " Tilte: " + note.Title + "  AddNotes: " + note.AddNotes + "  Archieve: " + note.Archieve + "  Trash : " + note.Trash + "  Note Pined: " + note.Pin +
-                              "  Remainder: " + note.Remainder + "  Color: " + note.Color;
-                            listofnotes.Add(result);
-                        }
-
-                    }
-                    return listofnotes;
+                    return notes;
                 }
                 return null;
             }
@@ -300,27 +275,15 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public List<string> GetArchieveNotes(int userid)
+
+        public IEnumerable<NotesModel> GetArchieveNotes(int userid)
         {
             try
             {
-
-                List<string> listofnotes = new List<string>();
-                if (userid != 0)
+                IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid && x.Archieve == true select x;
+                if (notes != null)
                 {
-                    IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
-                    foreach (var note in notes)
-                    {
-
-                        if (note.Archieve == true)
-                        {
-                            string result = note.NoteID + " Tilte: " + note.Title + "  AddNotes: " + note.AddNotes + "  Archieve: " + note.Archieve + "  Trash : " + note.Trash + "  Note Pined: " + note.Pin +
-                                 "  Remainder: " + note.Remainder + "  Color: " + note.Color;
-                            listofnotes.Add(result);
-                        }
-
-                    }
-                    return listofnotes;
+                    return notes;
                 }
                 return null;
             }
@@ -329,27 +292,30 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public List<string> GetTrashNotes(int userid)
+        public IEnumerable<NotesModel> GetTrashNotes(int userid)
         {
             try
             {
-
-                List<string> listofnotes = new List<string>();
-                if (userid != 0)
+                IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid && x.Trash == true select x;
+                if (notes != null)
                 {
-                    IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid select x;
-                    foreach (var note in notes)
-                    {
-
-                        if (note.Trash == true)
-                        {
-                            string result = note.NoteID + " Tilte: " + note.Title + "  AddNotes: " + note.AddNotes + "  Archieve: " + note.Archieve + "  Trash : " + note.Trash + "  Note Pined: " + note.Pin +
-                                 "  Remainder: " + note.Remainder + "  Color: " + note.Color;
-                            listofnotes.Add(result);
-                        }
-
-                    }
-                    return listofnotes;
+                    return notes;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<NotesModel> GetRemainder(int userid)
+        {
+            try
+            {
+                IEnumerable<NotesModel> notes = from x in this.userContext.Notes where x.UserID == userid && x.Remainder != null select x;
+                if (notes != null)
+                {
+                    return notes;
                 }
                 return null;
             }

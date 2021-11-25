@@ -61,8 +61,30 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
+        [Route("api/updatecolor")]//API-Application programming interface
+        public async Task<IActionResult> UpdateColor(int noteId, string colour)
+        {
+            try
+            {
+                string result = await this.manager.Updatecolor(noteId, colour);
+
+                if (result.Equals("color has Updated"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPut]
         [Route("api/notearchive")]//API-Application programming interface
-        public async Task<IActionResult> NoteArchive(NotesModel notes)
+        public async Task<IActionResult> NoteArchive(int notes)
         {
             try
             {
@@ -91,36 +113,14 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/updatecolor")]//API-Application programming interface
-        public async Task<IActionResult> UpdateColor([FromBody] NotesModel notes)
-        {
-            try
-            {
-                string result = await this.manager.UpdateColor(notes);
-
-                if (result.Equals("color has Updated"))
-                {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
-                }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
-            }
-        }
-        [HttpPut]
         [Route("api/notepin")]//API-Application programming interface
-        public async Task<IActionResult> Pinned(NotesModel notes)
+        public async Task<IActionResult> Pinned(int noteId)
         {
             try
             {
-                string result = await this.manager.Pinned(notes);
+                string result = await this.manager.Pinned(noteId);
 
-                if (result.Equals("Note pinned"))
+                if (result.Equals("Note removed from Trashed and pinned"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
                 }
@@ -129,6 +129,10 @@ namespace FundooNotesDemo.Controller
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
                 }
                 else if (result.Equals("Note unpinned"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else if (result.Equals("Note Pinned"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
                 }
@@ -144,7 +148,7 @@ namespace FundooNotesDemo.Controller
         }
         [HttpPut]
         [Route("api/notetrash")]//API-Application programming interface
-        public async Task<IActionResult> Trash(NotesModel notes)
+        public async Task<IActionResult> Trash(int notes)
         {
             try
             {
@@ -172,15 +176,16 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
-        [Route("api/permanantnotetrash")]//API-Application programming interface
-        public async Task<IActionResult> PermanantRemove(NotesModel notes)
+        [Route("api/remainder")]//API-Application programming interface
+        public async Task<IActionResult> Remainder(int noteId, string remainder)
         {
             try
             {
-                string result = await this.manager.PermanantRemove(notes);
+                string result = await this.manager.Remainder(noteId, remainder);
 
-                if (result.Equals("Notes is Permanant Removed"))
+                if (result.Equals("Remainder is Set"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
                 }
@@ -194,15 +199,15 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
-        [HttpPut]
-        [Route("api/remainder")]//API-Application programming interface
-        public async Task<IActionResult> Remainder([FromBody] NotesModel notes)
+        [HttpDelete]
+        [Route("api/permananttrashnotes")]//API-Application programming interface
+        public async Task<IActionResult> PermanantRemove(int notesId)
         {
             try
             {
-                string result = await this.manager.Remainder(notes);
+                string result = await this.manager.PermanantRemove(notesId);
 
-                if (result.Equals("Remainder is Set"))
+                if (result.Equals("Notes is Permanant Removed"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
                 }
@@ -222,15 +227,16 @@ namespace FundooNotesDemo.Controller
         {
             try
             {
-                List<string> result = this.manager.GetUserNotes(userid);
+                IEnumerable<NotesModel> result = this.manager.GetUserNotes(userid);
 
-                if (result.Count != 0)
+                if (result.Equals(null))
                 {
-                    return this.Ok(new { Status = true, Data = result });
+                    return this.BadRequest(new { Status = false, Data = result });
+
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Data = result });
+                    return this.Ok(new { Status = true, Data = result });
                 }
             }
             catch (Exception ex)
@@ -244,15 +250,16 @@ namespace FundooNotesDemo.Controller
         {
             try
             {
-                List<string> result = this.manager.GetArchieveNotes(userid);
+                IEnumerable<NotesModel> result = this.manager.GetArchieveNotes(userid);
 
-                if (result.Count != 0)
+                if (result.Equals(null))
                 {
-                    return this.Ok(new { Status = true, Data = result });
+                    return this.BadRequest(new { Status = false, Data = result });
+
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Data = result });
+                    return this.Ok(new { Status = true, Data = result });
                 }
             }
             catch (Exception ex)
@@ -266,15 +273,39 @@ namespace FundooNotesDemo.Controller
         {
             try
             {
-                List<string> result = this.manager.GetTrashNotes(userid);
+                IEnumerable<NotesModel> result = this.manager.GetTrashNotes(userid);
 
-                if (result.Count != 0)
+                if (result.Equals(null))
                 {
-                    return this.Ok(new { Status = true, Data = result });
+                    return this.BadRequest(new { Status = false, Data = result });
+
                 }
                 else
                 {
+                    return this.Ok(new { Status = true, Data = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpGet]
+        [Route("api/getremainder")]//API-Application programming interface
+        public IActionResult GetRemainder(int userid)
+        {
+            try
+            {
+                IEnumerable<NotesModel> result = this.manager.GetRemainder(userid);
+
+                if (result.Equals(null))
+                {
                     return this.BadRequest(new { Status = false, Data = result });
+
+                }
+                else
+                {
+                    return this.Ok(new { Status = true, Data = result });
                 }
             }
             catch (Exception ex)
