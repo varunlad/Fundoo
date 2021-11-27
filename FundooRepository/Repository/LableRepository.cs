@@ -41,5 +41,98 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> LableNote(LableModel lable)
+        {
+            try
+            {
+                var validLabel = this.userContext.LabelsTable.Where(x => x.UserID == lable.UserID && lable.NoteID != null).FirstOrDefault();
+                if (validLabel != null)
+                {
+                    // Add the data to the database
+                    this.userContext.Add(lable);
+                    // Save the change in database
+                    await this.userContext.SaveChangesAsync();
+                    return "Lable is added Successfully";
+                }
+                else
+                    return "Label name already Exits";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> RemoveLabel(int labelId)
+        {
+            try
+            {
+                var validLabel = this.userContext.LabelsTable.Where(x => x.LableId == labelId).SingleOrDefault();
+                if (validLabel != null)
+                {
+                    this.userContext.LabelsTable.Remove(validLabel);
+                    await this.userContext.SaveChangesAsync();
+                    return "Deleted Label From Note";
+                }
+
+                return "No label present";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> DeleteLabel(int userId, string labelName)
+        {
+            try
+            {
+                var validLabel = this.userContext.LabelsTable.Where(x => x.Lable == labelName && x.UserID == userId).ToList();
+                if (validLabel != null)
+                {
+                    this.userContext.LabelsTable.RemoveRange(validLabel);
+                    await this.userContext.SaveChangesAsync();
+                    return "Label Deleted";
+                }
+
+                return "Label not exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<LableModel> GetLabelByNote(int notesId)
+        {
+            try
+            {
+                IEnumerable<LableModel> validLabel = this.userContext.LabelsTable.Where(x => x.NoteID == notesId);
+                if (validLabel != null)
+                {
+                    return validLabel;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public IEnumerable<LableModel> GetLabelByUserId(int userId)
+        {
+            try
+            {
+                IEnumerable<LableModel> validLabel = this.userContext.LabelsTable.Where(x => x.UserID == userId);
+                if (validLabel != null)
+                {
+                    return validLabel;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
