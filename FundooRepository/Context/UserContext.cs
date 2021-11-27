@@ -16,6 +16,7 @@ namespace FundooRepository.Context
             public DbSet<RegisterModel> UsersTable { get; set; } //DataSet- it is used to represent table
             public DbSet<NotesModel> Notes { get; set; }
             public DbSet<CollaboratorModel> Collaborator { get; set; }
+            public DbSet<LableModel> LabelsTable { get; set; }
 
-        }
+    }
 }
