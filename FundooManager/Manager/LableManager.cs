@@ -48,6 +48,17 @@ namespace FundooManager.Manager
                 throw new Exception(e.Message);
             }
         }
+        public async Task<string> UpdateLabel(LableModel lableModel)
+        {
+            try
+            {
+                return await this.repository.UpdateLabel(lableModel);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public async Task<string> DeleteLabel(int userId, string labelName)
         {
             try

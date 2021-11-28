@@ -117,6 +117,22 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> UpdateLabel(LableModel lableModel)
+        {
+            try
+            {
+                var validLabel = this.userContext.LabelsTable.Where(x => x.LableId == lableModel.LableId).Select(x => x.Lable).SingleOrDefault();
+                var oldLabelname = this.userContext.LabelsTable.Where(x => x.Lable == validLabel).ToList();
+                oldLabelname.ForEach(x => x.Lable = lableModel.Lable);
+                this.userContext.LabelsTable.UpdateRange(oldLabelname);
+                await this.userContext.SaveChangesAsync();
+                return "Update Successful";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ArgumentNullException(ex.Message);
+            }
+        }
         public IEnumerable<LableModel> GetLabelByUserId(int userId)
         {
             try

@@ -59,6 +59,28 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+        [HttpPut]
+        [Route("api/updatelabel")]//API-Application programming interface
+        public async Task<IActionResult> UpdateLabel([FromBody] LableModel lableModel)
+        {
+            try
+            {
+                string result = await this.manager.UpdateLabel(lableModel);
+
+                if (result.Equals("Update Successful"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
+            }
+        }
         [HttpDelete]
         [Route("api/removelabelbylableId")]//API-Application programming interface
         public async Task<IActionResult> RemoveLabel(int labelId)
