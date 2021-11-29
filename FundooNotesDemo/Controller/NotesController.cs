@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace FundooNotesDemo.Controller
 {
+    [ApiController]
+    [Route("api/[Controller]")]
     public class NotesController : ControllerBase
     {
         private readonly INotesManager manager;
@@ -17,7 +19,7 @@ namespace FundooNotesDemo.Controller
             this.manager = manager;
         }
         [HttpPost]
-        [Route("api/notes")]//API-Application programming interface
+        [Route("addnotes")]//API-Application programming interface
         public async Task<IActionResult> Notes([FromBody] NotesModel notes)
         {
             try
@@ -39,7 +41,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/update")]//API-Application programming interface
+        [Route("updatenotes")]//API-Application programming interface
         public async Task<IActionResult> UpdatedNotes([FromBody] NotesModel notes)
         {
             try
@@ -61,7 +63,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/updatecolor")]//API-Application programming interface
+        [Route("updatecolor")]//API-Application programming interface
         public async Task<IActionResult> UpdateColor(int noteId, string colour)
         {
             try
@@ -83,7 +85,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/notearchive")]//API-Application programming interface
+        [Route("notearchive")]//API-Application programming interface
         public async Task<IActionResult> NoteArchive(int notes)
         {
             try
@@ -113,7 +115,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/notepin")]//API-Application programming interface
+        [Route("notepin")]//API-Application programming interface
         public async Task<IActionResult> Pinned(int noteId)
         {
             try
@@ -147,7 +149,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/notetrash")]//API-Application programming interface
+        [Route("notetrash")]//API-Application programming interface
         public async Task<IActionResult> Trash(int notes)
         {
             try
@@ -178,7 +180,7 @@ namespace FundooNotesDemo.Controller
         }
 
         [HttpPut]
-        [Route("api/remainder")]//API-Application programming interface
+        [Route("noteremainder")]//API-Application programming interface
         public async Task<IActionResult> Remainder(int noteId, string remainder)
         {
             try
@@ -200,7 +202,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpDelete]
-        [Route("api/permananttrashnotes")]//API-Application programming interface
+        [Route("permananttrashnotes")]//API-Application programming interface
         public async Task<IActionResult> PermanantRemove(int notesId)
         {
             try
@@ -222,7 +224,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpGet]
-        [Route("api/getnotes")]//API-Application programming interface
+        [Route("getnotes")]//API-Application programming interface
         public IActionResult GetUserNotes(int userid)
         {
             try
@@ -245,7 +247,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpGet]
-        [Route("api/getarchievenotes")]//API-Application programming interface
+        [Route("getarchievenotes")]//API-Application programming interface
         public IActionResult GetArchieveNotes(int userid)
         {
             try
@@ -268,7 +270,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpGet]
-        [Route("api/gettrashnotes")]//API-Application programming interface
+        [Route("gettrashnotes")]//API-Application programming interface
         public IActionResult GetTrashNotes(int userid)
         {
             try
@@ -291,7 +293,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpGet]
-        [Route("api/getremainder")]//API-Application programming interface
+        [Route("getremainder")]//API-Application programming interface
         public IActionResult GetRemainder(int userid)
         {
             try
@@ -314,7 +316,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/addimage")]
+        [Route("addimage")]
         public async Task<IActionResult> AddImage(int notesId, IFormFile image)
         {
             try

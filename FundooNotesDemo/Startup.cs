@@ -42,6 +42,14 @@ namespace FundooNotesDemo
             services.AddTransient<INotesManager, NotesManager>();
             services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
             services.AddTransient<ICollaboratorManager, CollaboratorManager>();
+
+            services.AddCors(options => options.AddPolicy("AllowAllHeaders", builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            }));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FunDooNote", Version = "1.0" });
@@ -101,7 +109,7 @@ namespace FundooNotesDemo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseCors("AllowAllHeaders");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

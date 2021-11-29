@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace FundooNotesDemo.Controller
 {
+    [ApiController]
+    [Route("api/[Controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IUserManager manager;
@@ -18,7 +20,7 @@ namespace FundooNotesDemo.Controller
             this.manager = manager;
         }
         [HttpPost]
-        [Route("api/register")]//API-Application programming interface
+        [Route("userregister")]//API-Application programming interface
         public async Task<IActionResult> Register([FromBody] RegisterModel userData)
         {
             try
@@ -40,7 +42,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpGet]
-        [Route("api/Login")]
+        [Route("userLogin")]
         public IActionResult LogIn([FromBody] LoginModel login)
         {
             try
@@ -68,7 +70,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/reset")]
+        [Route("resetpassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel reset)
         {
             try
@@ -90,7 +92,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPost]
-        [Route("api/forgot")]
+        [Route("forgotpassword")]
         public IActionResult ForgotPassword(string email)
         {
             try

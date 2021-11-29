@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace FundooNotesDemo.Controller
 {
+    [ApiController]
+    [Route("api/[Controller]")]
     public class LableController : ControllerBase
     {
         private readonly ILableManager manager;
@@ -16,7 +18,7 @@ namespace FundooNotesDemo.Controller
             this.manager = manager;
         }
         [HttpPost]
-        [Route("api/lableuser")]//API-Application programming interface
+        [Route("userslabel")]//API-Application programming interface
         public async Task<IActionResult> Lable([FromBody] LableModel lable)
         {
             try
@@ -38,7 +40,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPost]
-        [Route("api/lablenote")]//API-Application programming interface
+        [Route("lablenote")]//API-Application programming interface
         public async Task<IActionResult> LableNote([FromBody] LableModel lable)
         {
             try
@@ -60,7 +62,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpPut]
-        [Route("api/updatelabel")]//API-Application programming interface
+        [Route("updatelabel")]//API-Application programming interface
         public async Task<IActionResult> UpdateLabel([FromBody] LableModel lableModel)
         {
             try
@@ -82,7 +84,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpDelete]
-        [Route("api/removelabelbylableId")]//API-Application programming interface
+        [Route("removelabelbylableId")]//API-Application programming interface
         public async Task<IActionResult> RemoveLabel(int labelId)
         {
             try
@@ -104,7 +106,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpDelete]
-        [Route("api/deletelabel")]//API-Application programming interface
+        [Route("deletelabel")]//API-Application programming interface
         public async Task<IActionResult> DeleteLabel(int userId, string labelName)
         {
             try
@@ -126,7 +128,7 @@ namespace FundooNotesDemo.Controller
             }
         }
         [HttpGet]
-        [Route("api/getlableodnoteid")]//API-Application programming interface
+        [Route("getlableodnoteid")]//API-Application programming interface
         public IActionResult GetLabelByNote(int notesId)
         {
             try
@@ -150,7 +152,7 @@ namespace FundooNotesDemo.Controller
         }
 
         [HttpGet]
-        [Route("api/getlablebyuserId")]//API-Application programming interface
+        [Route("getlablebyuserId")]//API-Application programming interface
         public IActionResult GetLabelByUserId(int userId)
         {
             try
