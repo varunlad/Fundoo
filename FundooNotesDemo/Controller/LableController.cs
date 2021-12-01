@@ -1,24 +1,46 @@
-﻿using FundooManager.Interface;
-using FundooModel;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿//// --------------------------------------------------------------------------------------------------------
+// <copyright file="LableController.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Varun Hemant Lad"/>
+// ----------------------------------------------------------------------------------------------------------
 namespace FundooNotesDemo.Controller
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooManager.Interface;
+    using FundooModel;
+    using Microsoft.AspNetCore.Mvc;
+
+    /// <summary>
+    /// LabelController method is created in order to take the HTTP request from Swagger or Postman and to test the API. 
+    /// </summary>
     [ApiController]
     [Route("api/[Controller]")]
     public class LableController : ControllerBase
     {
+        /// <summary>
+        /// ILabelManager will help me to access the Methods of Manager Class.
+        /// </summary>
         private readonly ILableManager manager;
+
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="LableController"/> class created the instance of Manager.
+        /// </summary>
+        /// <param name="manager">passing the object of ILabelManager</param>
         public LableController(ILableManager manager)
         {
             this.manager = manager;
         }
+
+        /// <summary>
+        /// Label method is created to access and interact with the Label Manager.
+        /// </summary>
+        /// <param name="lable">LabelModel is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPost]
-        [Route("userslabel")]//API-Application programming interface
+        [Route("userslabel")]
         public async Task<IActionResult> Lable([FromBody] LableModel lable)
         {
             try
@@ -39,8 +61,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// LabelNote method is created to access and interact with the LabelNote Manager.
+        /// </summary>
+        /// <param name="lable">LabelModel is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPost]
-        [Route("lablenote")]//API-Application programming interface
+        [Route("lablenote")]
         public async Task<IActionResult> LableNote([FromBody] LableModel lable)
         {
             try
@@ -61,8 +89,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// UpdateLabel method is created to access and interact with the UpdateLabel Manager.
+        /// </summary>
+        /// <param name="lableModel">LabelModel is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("updatelabel")]//API-Application programming interface
+        [Route("updatelabel")]
         public async Task<IActionResult> UpdateLabel([FromBody] LableModel lableModel)
         {
             try
@@ -83,8 +117,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// RemoveLabel method is created to access and interact with the RemoveLabel Manager.
+        /// </summary>
+        /// <param name="labelId">Label Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpDelete]
-        [Route("removelabelbylableId")]//API-Application programming interface
+        [Route("removelabelbylableId")]
         public async Task<IActionResult> RemoveLabel(int labelId)
         {
             try
@@ -105,8 +145,15 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// DeleteLabel method is created to access and interact with the DeleteLabel Manager.
+        /// </summary>
+        /// <param name="userId">User Id is taken as a parameter</param>
+        /// <param name="labelName">labelName is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpDelete]
-        [Route("deletelabel")]//API-Application programming interface
+        [Route("deletelabel")]
         public async Task<IActionResult> DeleteLabel(int userId, string labelName)
         {
             try
@@ -127,8 +174,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// GetLabelByNote method is created to access and interact with the GetLabelByNote Manager.
+        /// </summary>
+        /// <param name="notesId">Note Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpGet]
-        [Route("getlableodnoteid")]//API-Application programming interface
+        [Route("getlableodnoteid")]
         public IActionResult GetLabelByNote(int notesId)
         {
             try
@@ -138,7 +191,6 @@ namespace FundooNotesDemo.Controller
                 if (result.Equals(null))
                 {
                     return this.BadRequest(new { Status = false, Message = result });
-
                 }
                 else
                 {
@@ -151,8 +203,13 @@ namespace FundooNotesDemo.Controller
             }
         }
 
+        /// <summary>
+        /// GetLabelByUserId method is created to access and interact with the GetLabelByUserId Manager.
+        /// </summary>
+        /// <param name="userId">User Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpGet]
-        [Route("getlablebyuserId")]//API-Application programming interface
+        [Route("getlablebyuserId")]
         public IActionResult GetLabelByUserId(int userId)
         {
             try
@@ -162,7 +219,6 @@ namespace FundooNotesDemo.Controller
                 if (result.Equals(null))
                 {
                     return this.BadRequest(new { Status = false, Message = result });
-
                 }
                 else
                 {

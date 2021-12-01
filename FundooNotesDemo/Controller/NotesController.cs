@@ -1,25 +1,49 @@
-﻿using FundooManager.Interface;
-using FundooModel;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FundooNotesDemo.Controller
+﻿//// --------------------------------------------------------------------------------------------------------
+// <copyright file="NotesController.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Varun Hemant Lad"/>
+// ----------------------------------------------------------------------------------------------------------
+namespace FunDooNote.Controller
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooManager.Interface;
+    using FundooModel;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
+    /// <summary>
+    /// NotesController method is created in order to take the HTTP request from Swagger or Postman and to test the API. 
+    /// </summary>
+    [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class NotesController : ControllerBase
     {
+        /// <summary>
+        /// INotesManager will help me to access the Methods of Manager Class.
+        /// </summary>
         private readonly INotesManager manager;
+
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="NotesController"/> class created the instance of Manager.
+        /// </summary>
+        /// <param name="manager">passing the object of INotesManager</param>
         public NotesController(INotesManager manager)
         {
             this.manager = manager;
         }
+
+        /// <summary>
+        /// Notes Method is created to access and interact with the Label Manager.
+        /// </summary>
+        /// <param name="notes">NotesModel is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPost]
-        [Route("addnotes")]//API-Application programming interface
+        [Route("addnotes")]
         public async Task<IActionResult> Notes([FromBody] NotesModel notes)
         {
             try
@@ -40,8 +64,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// UpdatedNotes Method is created to access and interact with the UpdatedNotes Manager.
+        /// </summary>
+        /// <param name="notes">NotesModel is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("updatenotes")]//API-Application programming interface
+        [Route("updatenotes")]
         public async Task<IActionResult> UpdatedNotes([FromBody] NotesModel notes)
         {
             try
@@ -62,8 +92,15 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// UpdateColor Method is created to access and interact with the UpdateColor Manager.
+        /// </summary>
+        /// <param name="noteId">note Id is taken as a parameter</param>
+        /// <param name="colour">color is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("updatecolor")]//API-Application programming interface
+        [Route("updatecolor")]
         public async Task<IActionResult> UpdateColor(int noteId, string colour)
         {
             try
@@ -84,8 +121,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// NoteArchive Method is created to access and interact with the NoteArchive Manager.
+        /// </summary>
+        /// <param name="notes">Note Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("notearchive")]//API-Application programming interface
+        [Route("notearchive")]
         public async Task<IActionResult> NoteArchive(int notes)
         {
             try
@@ -114,8 +157,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Pinned Method is created to access and interact with the Pinned Manager.
+        /// </summary>
+        /// <param name="noteId">Note Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("notepin")]//API-Application programming interface
+        [Route("notepin")]
         public async Task<IActionResult> Pinned(int noteId)
         {
             try
@@ -148,8 +197,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Trash Method is created to access and interact with the Trash Manager.
+        /// </summary>
+        /// <param name="notes">Note Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("notetrash")]//API-Application programming interface
+        [Route("notetrash")]
         public async Task<IActionResult> Trash(int notes)
         {
             try
@@ -179,8 +234,14 @@ namespace FundooNotesDemo.Controller
             }
         }
 
+        /// <summary>
+        /// Remainder Method is created to access and interact with the Remainder Manager.
+        /// </summary>
+        /// <param name="noteId">Note Id is taken as a parameter</param>
+        /// <param name="remainder">remainder is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
-        [Route("noteremainder")]//API-Application programming interface
+        [Route("noteremainder")]
         public async Task<IActionResult> Remainder(int noteId, string remainder)
         {
             try
@@ -201,8 +262,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// PermanentRemove Method is created to access and interact with the PermanentRemove Manager.
+        /// </summary>
+        /// <param name="notesId">Note Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpDelete]
-        [Route("permananttrashnotes")]//API-Application programming interface
+        [Route("permananttrashnotes")]
         public async Task<IActionResult> PermanantRemove(int notesId)
         {
             try
@@ -223,8 +290,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// GetUserNotes Method is created to access and interact with the GetUserNotes Manager.
+        /// </summary>
+        /// <param name="userid">User Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpGet]
-        [Route("getnotes")]//API-Application programming interface
+        [Route("getnotes")]
         public IActionResult GetUserNotes(int userid)
         {
             try
@@ -234,7 +307,6 @@ namespace FundooNotesDemo.Controller
                 if (result.Equals(null))
                 {
                     return this.BadRequest(new { Status = false, Data = result });
-
                 }
                 else
                 {
@@ -246,8 +318,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// GetArchiveNotes Method is created to access and interact with the GetArchiveNotes Manager.
+        /// </summary>
+        /// <param name="userid">User Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpGet]
-        [Route("getarchievenotes")]//API-Application programming interface
+        [Route("getarchievenotes")]
         public IActionResult GetArchieveNotes(int userid)
         {
             try
@@ -257,7 +335,6 @@ namespace FundooNotesDemo.Controller
                 if (result.Equals(null))
                 {
                     return this.BadRequest(new { Status = false, Data = result });
-
                 }
                 else
                 {
@@ -269,8 +346,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// GetTrashNotes Method is created to access and interact with the GetTrashNotes Manager.
+        /// </summary>
+        /// <param name="userid">User Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpGet]
-        [Route("gettrashnotes")]//API-Application programming interface
+        [Route("gettrashnotes")]
         public IActionResult GetTrashNotes(int userid)
         {
             try
@@ -280,7 +363,6 @@ namespace FundooNotesDemo.Controller
                 if (result.Equals(null))
                 {
                     return this.BadRequest(new { Status = false, Data = result });
-
                 }
                 else
                 {
@@ -292,8 +374,14 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// GetRemainder Method is created to access and interact with the GetRemainder Manager.
+        /// </summary>
+        /// <param name="userid">User Id is taken as a parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpGet]
-        [Route("getremainder")]//API-Application programming interface
+        [Route("getremainder")]
         public IActionResult GetRemainder(int userid)
         {
             try
@@ -303,7 +391,6 @@ namespace FundooNotesDemo.Controller
                 if (result.Equals(null))
                 {
                     return this.BadRequest(new { Status = false, Data = result });
-
                 }
                 else
                 {
@@ -315,6 +402,13 @@ namespace FundooNotesDemo.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// AddImage Method is created to access and interact with the AddImage Manager.
+        /// </summary>
+        /// <param name="notesId">Note Id is taken as parameter</param>
+        /// <param name="image">image is taken as parameter</param>
+        /// <returns>Return the status of the Request made by user</returns>
         [HttpPut]
         [Route("addimage")]
         public async Task<IActionResult> AddImage(int notesId, IFormFile image)

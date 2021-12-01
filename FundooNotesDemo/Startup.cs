@@ -1,41 +1,54 @@
-using FundooManager.Interface;
-using FundooManager.Manager;
-using FundooRepository.Context;
-using FundooRepository.Interface;
-using FundooRepository.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+//// -------------------------------------------------------------------------------------------------------
+// <copyright file="Startup.cs" company="Bridgelabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <creator name="Varun Hemant Lad"/>
+// ----------------------------------------------------------------------------------------------------------
 namespace FundooNotesDemo
 {
+    using System.Text;
+    using FundooManager.Interface;
+    using FundooManager.Manager;
+    using FundooRepository.Context;
+    using FundooRepository.Interface;
+    using FundooRepository.Repository;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
+
+    /// <summary>
+    /// Startup class is mainly consists of to major tasks first ConfigureServices where we add all the Dependency and Middleware
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class created the instance of configuration.
+        /// </summary>
+        /// <param name="configuration">passing the object of IConfiguration</param>
         public Startup(IConfiguration configuration)
         {
             this.Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets the Configuration.This is an object for IConfiguration.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// adds additional functionalities to framework and application.
+        /// </summary>
+        /// <param name="services">passing the object of IServiceCollection</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddDbContext<UserContext>(options => options.UseMySql(this.Configuration.GetConnectionString("fundoodemo")));
-            //services.AddDbContext<UserContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<INotesRepository, NotesRepository>();
@@ -43,7 +56,9 @@ namespace FundooNotesDemo
             services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
             services.AddTransient<ICollaboratorManager, CollaboratorManager>();
 
-            services.AddCors(options => options.AddPolicy("AllowAllHeaders", builder =>
+            services.AddCors(options =>
+            options.AddPolicy(
+                "AllowAllHeaders", builder =>
             {
                 builder.AllowAnyOrigin()
                 .AllowAnyMethod()
@@ -53,7 +68,9 @@ namespace FundooNotesDemo
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FunDooNote", Version = "1.0" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                c.AddSecurityDefinition(
+               "Bearer",
+                new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -73,8 +90,9 @@ namespace FundooNotesDemo
                                     Id = "Bearer"
                                 }
                             },
-                            new string[] {}
-
+                            new string[]
+                            {
+                            }
                     }
                 });
             });
@@ -91,12 +109,16 @@ namespace FundooNotesDemo
                     ValidateAudience = false,
                     ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"])) //Configuration["JwtToken:SecretKey"]  
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))  
                 };
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">passing the object of IApplicationBuilder</param>
+        /// <param name="env">passing the object of IWebHostEnvironment</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -106,7 +128,7 @@ namespace FundooNotesDemo
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                //// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseCors("AllowAllHeaders");
